@@ -98,11 +98,11 @@ import Foundation
  5. Используйте перечисления enum для определения доступных цветов.
   */
 
-enum CMYKColours {
-    case cyan
-    case magenta
-    case yellow
-    case key
+enum CMYKColours: String {
+    case cyan = "синими"
+    case magenta = "бордовыми"
+    case yellow = "желтыми"
+    case key = "чёрными"
 }
 
 protocol Ink{
@@ -111,37 +111,51 @@ protocol Ink{
 
 class Cyan: Ink{
     func print() {
-        Swift.print("Печать синими чернилами")
+        Swift.print("Печать \(CMYKColours.cyan.rawValue) чернилами")
     }
 }
 
 class Magenta: Ink{
     func print() {
-        Swift.print("Печать бордовыми чернилами")
+        Swift.print("Печать \(CMYKColours.magenta.rawValue) чернилами")
     }
 }
 
 class Yellow: Ink{
     func print() {
-        Swift.print("Печать жёлтыми чернилами")
+        Swift.print("Печать \(CMYKColours.yellow.rawValue) чернилами")
     }
 }
 
 class Key: Ink{
     func print() {
-        Swift.print("Печать чёрными чернилами")
+        Swift.print("Печать \(CMYKColours.key.rawValue) чернилами")
     }
 }
 
 class Printer {
-    var ink: Ink
+    var ink: Ink?
     init(ink: Ink){
         self.ink = ink
     }
     func startPrinting(){
+        guard let ink = ink else {
+            print("Ошибка выбора чернил")
+            return
+        }
         ink.print()
     }
 }
-let cyanInk = Cyan()
-let printer = Printer(ink: cyanInk)
+
+let yellowInk = Yellow()
+let printer = Printer(ink: yellowInk)
+printer.startPrinting()
+
+printer.ink = Cyan()
+printer.startPrinting()
+
+printer.ink = Magenta()
+printer.startPrinting()
+
+printer.ink = Key()
 printer.startPrinting()
